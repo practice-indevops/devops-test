@@ -1,0 +1,25 @@
+#!/bin/bash
+# aws_tracker.sh - Show and log number of running EC2 instances with success/failure markers
+
+LOGFILE="/home/ubuntu/aws_tracker.log"
+AWSCLI="/snap/bin/aws"   # confirm with `which aws`
+
+echo "[$(date)] Starting EC2 tracker job..." | tee -a $LOGFILE
+
+# Run AWS CLI and capture exit status
+COUNT=$($AWSCLI ec2 describe-instances \
+  --filters "Name=instance-state-name,Values=running" \
+  --query "Reservations[*].Instances[*].InstanceId" \
+  --output text \
+  --region ap-south-1 | wc -w)
+
+STATUS=$?   # exit code of last command
+
+if [ $STATUS -eq 0 ]; then
+  MESSAGE="[$(date)] [SUCCESS] Running instances count: $COUNT"
+else
+  MESSAGE="[$(date)] [ERROR] AWS CLI failed with exit code $STATUS"
+fi
+
+# Print to screen and log
+echo "$MESSAGE" | tee -a $LOGFILE
