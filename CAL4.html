@@ -1,0 +1,23 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Calculator</title>
+</head>
+<body>
+<h2>Simple Calculator</h2>
+<input id="num1" type="number" placeholder="First number">
+<input id="num2" type="number" placeholder="Second number">
+<button onclick="calculate()">Add</button>
+<p id="result"></p>
+
+<script>
+function calculate() {
+    let n1 = parseInt(document.getElementById('num1').value);
+    let n2 = parseInt(document.getElementById('num2').value);
+    document.getElementById('result').innerText = "Sum: " + (n1 + n2);
+}
+</script>
+</body>
+</html>
+
